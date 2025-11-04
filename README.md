@@ -1111,41 +1111,74 @@ CREATE TABLE order_items (
 This project follows Clean Architecture principles:
 
 ```
-├── cmd/
-│   └── main.go                 # Application entry point
-├── internal/
-│   ├── domain/                 # Entities
-│   │   ├── user.go
-│   │   ├── product.go
-│   │   ├── warehouse.go
-│   │   ├── cart.go
-│   │   └── order.go
-│   ├── repository/             # Data access layer
-│   │   ├── user_repository.go
-│   │   ├── product_repository.go
-│   │   ├── warehouse_repository.go
-│   │   ├── cart_repository.go
-│   │   └── order_repository.go
-│   ├── usecase/                # Business logic
-│   │   ├── user_usecase.go
-│   │   ├── product_usecase.go
-│   │   ├── warehouse_usecase.go
-│   │   ├── cart_usecase.go
-│   │   └── order_usecase.go
-│   └── delivery/
-│       └── http/               # HTTP handlers
-│           ├── user_handler.go
-│           ├── product_handler.go
-│           ├── warehouse_handler.go
-│           ├── cart_handler.go
-│           └── order_handler.go
-├── pkg/
-│   ├── jwt/                    # JWT utilities
-│   └── database/               # Database connection
-└── go.mod
-```
 
----
+.
+├── .env                               # Environment variables
+├── .git/                              # Git repository metadata
+├── cmd/
+│   └── server/
+│       └── main.go                    # Application entry point
+├── config/
+│   └── db.go                          # Database connection setup
+├── docker-compose.yml                 # Docker services configuration
+├── go.mod                             # Go module definition
+├── go.sum                             # Go dependencies lock file
+├── internal/
+│   ├── delivery/
+│   │   └── http/
+│   │       ├── auth_handler.go        # Auth HTTP handler
+│   │       ├── cart_handler.go        # Cart HTTP handler
+│   │       ├── order_handler.go       # Order HTTP handler
+│   │       ├── product_handler.go     # Product HTTP handler
+│   │       ├── router.go              # HTTP router configuration
+│   │       ├── wareHouse_handler.go   # Warehouse HTTP handler
+│   │       └── warehouse_stock_handler.go # Warehouse stock HTTP handler
+│   ├── domain/
+│   │   ├── cart.go                    # Cart entity
+│   │   ├── cart_item.go               # Cart item entity
+│   │   ├── order.go                   # Order entity
+│   │   ├── order_item.go              # Order item entity
+│   │   ├── product.go                 # Product entity
+│   │   ├── user.go                    # User entity
+│   │   ├── wareHouse.go               # Warehouse entity
+│   │   └── warehouse_stock.go         # Warehouse stock entity
+│   ├── repository/
+│   │   ├── cart_item_repo.go          # Cart item repository
+│   │   ├── cart_repo.go               # Cart repository
+│   │   ├── order_item_repo.go         # Order item repository
+│   │   ├── order_repo.go              # Order repository
+│   │   ├── product_repo.go            # Product repository
+│   │   ├── user_repo.go               # User repository
+│   │   ├── warehouse_repo.go          # Warehouse repository
+│   │   └── warehouse_stock_repo.go    # Warehouse stock repository
+│   ├── usecase/
+│   │   ├── auth_usecase.go            # Auth business logic
+│   │   ├── cart_item_usecase.go       # Cart item business logic
+│   │   ├── cart_usecase.go            # Cart business logic
+│   │   ├── order_usecase.go           # Order business logic
+│   │   ├── product_usecase.go         # Product business logic
+│   │   ├── wareHouse_usecase.go       # Warehouse business logic
+│   │   └── warehouse_stock_usecase.go # Warehouse stock business logic
+│   └── utils/
+│       └── concurrency.go             # Concurrency utilities (goroutines, channels, etc.)
+├── migrations/
+│   ├── 001_create_users.sql
+│   ├── 002_create_products.sql
+│   ├── 003_ceate_warehouse.sql
+│   ├── 004_create_warehouse_stock.sql
+│   ├── 005_create_orders.sql
+│   ├── 006_create_carts.sql
+│   ├── 006_create_order_items.sql
+│   └── 007_create_cart_items.sql
+└── pkg/
+├── jwt/
+│   └── jwt.go                     # JWT utilities
+└── totp/
+└── totp.go                    # TOTP (2FA) utilities
+
+````
+
+
 
 ## Key Features Explained
 
@@ -1204,8 +1237,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 
 For questions or support, please contact:
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+- Email: dediandree22@gmail.com
+- GitHub: [ifs21014-itdel](https://github.com/ifs21014-itdel)
 
 ---
 
