@@ -24,9 +24,16 @@ func main() {
 	}
 	log.Println("JWT_SECRET loaded successfully (length:", len(jwtSecret), ")")
 
+	// Initialize DB
 	db, err := config.NewDB()
 	if err != nil {
 		log.Fatal("db:", err)
+	}
+
+	// Initialize Redis
+	redisClient := config.NewRedis()
+	if redisClient == nil {
+		log.Println("Warning: Redis not available, running without cache")
 	}
 
 	// repo -> usecase -> handler
@@ -40,11 +47,11 @@ func main() {
 	cartItemRepo := repo.NewCartItemRepository(db)
 
 	authUC := usecase.NewAuthUsecase(userRepo)
-	productUC := usecase.NewProductUsecase(productRepo)
+	productUC := usecase.NewProductUsecase(productRepo, redisClient) // Pass Redis client
 	wareHouseUC := usecase.NewWarehouseUsecase(wareHouseRepo)
 	wareHouseStockUC := usecase.NewWarehouseStockUsecase(wareHouseStockRepo, wareHouseRepo, productRepo)
 	orderUC := usecase.NewOrderUsecase(orderRepo, orderItemRepo, cartRepo, cartItemRepo, wareHouseStockRepo)
-	cartUC := usecase.NewCartUsecase(cartRepo, cartItemRepo)
+	cartUC := usecase.NewCartUsecase(cartRepo, cartItemRepo, redisClient)
 	cartItemUC := usecase.NewCartItemUsecase(cartItemRepo)
 
 	r := http.NewRouter(authUC, productUC, wareHouseUC, wareHouseStockUC, orderUC, cartUC, cartItemUC)

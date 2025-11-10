@@ -61,9 +61,13 @@ func (h *CartHandler) DeleteCart(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid cart ID"})
 		return
 	}
-
+	userID, err := h.getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
 	ctx := c.Request.Context()
-	if err := h.cartUsecase.DeleteCart(ctx, id); err != nil {
+	if err := h.cartUsecase.DeleteCart(ctx, id, userID); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -75,14 +79,19 @@ func (h *CartHandler) DeleteCart(c *gin.Context) {
 }
 
 func (h *CartHandler) DeleteCartItem(c *gin.Context) {
+
 	id, err := h.getIDFromParam(c, "id")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid cart item ID"})
 		return
 	}
-
+	userID, err := h.getUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
 	ctx := c.Request.Context()
-	if err := h.cartUsecase.DeleteCartItem(ctx, id); err != nil {
+	if err := h.cartUsecase.DeleteCartItem(ctx, id, userID); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
